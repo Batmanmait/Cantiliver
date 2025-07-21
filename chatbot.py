@@ -6,16 +6,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 import os
 
-# Only download punkt if not already present
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     nltk.download('punkt')
-
-# Use correct file name (change if your file name is different)
-filename = "intents.json"  # or "inntents.json" if that's your actual filename
-
-# Load intents data with error handling
+filename = "intents.json"  
 try:
     with open(filename, encoding='utf-8') as file:
         data = json.load(file)
@@ -34,11 +29,9 @@ for intent in data["intents"]:
         sentences.append(pattern)
         labels.append(intent["tag"])
 
-# Encode labels
 label_encoder = LabelEncoder()
 y = label_encoder.fit_transform(labels)
 
-# Use NLTK tokenizer with token_pattern=None
 vectorizer = CountVectorizer(tokenizer=nltk.word_tokenize, token_pattern=None)
 X = vectorizer.fit_transform(sentences)
 
